@@ -1,0 +1,110 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard | BookSwap{% endblock %}
+
+{% block content %}
+<div class="row mb-5">
+    <div class="col-12">
+        <h2 class="fw-bold mb-1 text-white">Dashboard</h2>
+        <p class="text-secondary">Overview of the BookSwap platform statistics and recent additions.</p>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row mb-5">
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card card-dashboard p-4 bg-dark-card border border-secondary rounded-4 h-100 shadow-sm">
+            <div class="d-flex align-items-center">
+                <div class="icon-shape bg-primary-transparent text-primary rounded-3 p-3 me-3">
+                    <i class="bi bi-bookshelf fs-3"></i>
+                </div>
+                <div>
+                    <h6 class="text-secondary uppercase mb-1">Total Books</h6>
+                    <h2 class="fw-bold mb-0 text-white">{{ total_books }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6 col-lg-4 mb-4">
+        <div class="card card-dashboard p-4 bg-dark-card border border-secondary rounded-4 h-100 shadow-sm">
+            <div class="d-flex align-items-center">
+                <div class="icon-shape bg-info-transparent text-info rounded-3 p-3 me-3">
+                    <i class="bi bi-clock-history fs-3"></i>
+                </div>
+                <div>
+                    <h6 class="text-secondary uppercase mb-1">Active Swappers</h6>
+                    <h2 class="fw-bold mb-0 text-white">Online</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Books Table -->
+<div class="row">
+    <div class="col-12">
+        <div class="card bg-dark-card border border-secondary rounded-4 shadow-sm overflow-hidden">
+            <div class="card-header bg-transparent border-bottom border-secondary p-4 d-flex justify-content-between align-items-center">
+                <h5 class="mb-0 fw-bold text-white">Recently Added Books</h5>
+                <a href="{% url 'book_list' %}" class="btn btn-sm btn-outline-primary rounded-pill px-3">View All</a>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-dark table-hover align-middle mb-0">
+                        <thead class="table-secondary-dark">
+                            <tr>
+                                <th class="px-4 py-3 border-secondary text-secondary font-semibold">Title</th>
+                                <th class="py-3 border-secondary text-secondary font-semibold">Author</th>
+                                <th class="py-3 border-secondary text-secondary font-semibold">Genre</th>
+                                <th class="py-3 border-secondary text-secondary font-semibold">Condition</th>
+                                <th class="py-3 border-secondary text-secondary font-semibold">Price</th>
+                                <th class="py-3 border-secondary text-secondary font-semibold">Owner</th>
+                                <th class="px-4 py-3 border-secondary text-end text-secondary font-semibold">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if recent_books %}
+                                {% for book in recent_books %}
+                                    <tr>
+                                        <td class="px-4 py-3 border-secondary fw-medium text-white">{{ book.title }}</td>
+                                        <td class="py-3 border-secondary text-secondary-light">{{ book.author }}</td>
+                                        <td class="py-3 border-secondary text-secondary-light"><span class="badge bg-secondary-dark border border-secondary text-light">{{ book.genre }}</span></td>
+                                        <td class="py-3 border-secondary">
+                                            {% if book.condition == 'New' %}
+                                                <span class="badge bg-success-transparent text-success border border-success-20">New</span>
+                                            {% elif book.condition == 'Good' %}
+                                                <span class="badge bg-primary-transparent text-primary border border-primary-20">Good</span>
+                                            {% elif book.condition == 'Fair' %}
+                                                <span class="badge bg-warning-transparent text-warning border border-warning-20">Fair</span>
+                                            {% else %}
+                                                <span class="badge bg-danger-transparent text-danger border border-danger-20">Old</span>
+                                            {% endif %}
+                                        </td>
+                                        <td class="py-3 border-secondary fw-semibold text-primary-gradient">${{ book.price }}</td>
+                                        <td class="py-3 border-secondary text-secondary-light">{{ book.owner_name }}</td>
+                                        <td class="px-4 py-3 border-secondary text-end">
+                                            <a href="{% url 'book_detail' book.pk %}" class="btn btn-sm btn-outline-light border-secondary rounded-pill me-1"><i class="bi bi-eye"></i></a>
+                                            <a href="{% url 'book_edit' book.pk %}" class="btn btn-sm btn-outline-info rounded-pill"><i class="bi bi-pencil"></i></a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="7" class="text-center py-5 text-secondary">
+                                        <i class="bi bi-info-circle fs-2 d-block mb-3"></i>
+                                        No books found. Be the first to add one!
+                                        <div class="mt-3">
+                                            <a href="{% url 'book_add' %}" class="btn btn-sm btn-gradient px-4 rounded-pill">Add Book</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

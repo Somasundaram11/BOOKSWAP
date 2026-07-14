@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Book | BookSwap{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center py-4">
+    <div class="col-lg-8 col-xl-7">
+        <!-- Back Button -->
+        <a href="{% url 'book_list' %}" class="btn btn-sm btn-outline-secondary text-white border-secondary mb-4 rounded-pill px-3">
+            <i class="bi bi-arrow-left me-1"></i> Back to list
+        </a>
+        
+        <!-- Form Card -->
+        <div class="card bg-dark-card border border-secondary rounded-4 shadow-lg overflow-hidden">
+            <div class="card-header bg-transparent border-bottom border-secondary p-4">
+                <h4 class="mb-1 fw-bold text-white"><i class="bi bi-journal-plus text-primary me-2"></i>List a New Book</h4>
+                <p class="text-secondary mb-0 small">Fill in the details to share your book with the community.</p>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST" class="needs-validation" novalidate>
+                    {% csrf_token %}
+                    
+                    <!-- Loop through form fields for consistent rendering and styling -->
+                    {% for field in form %}
+                        <div class="mb-4">
+                            <label for="{{ field.id_for_label }}" class="form-label text-secondary-light fw-medium">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <div class="form-text text-secondary mt-1" style="font-size: 0.8rem;">{{ field.help_text }}</div>
+                            {% endif %}
+                            {% if field.errors %}
+                                <div class="text-danger mt-1 small">{{ field.errors }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    
+                    <div class="mt-5 d-flex gap-2">
+                        <button type="submit" class="btn btn-gradient px-5 py-2.5 rounded-pill shadow-sm">
+                            <i class="bi bi-check-circle-fill me-1"></i> List Book
+                        </button>
+                        <a href="{% url 'book_list' %}" class="btn btn-outline-secondary text-white border-secondary px-4 py-2.5 rounded-pill">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

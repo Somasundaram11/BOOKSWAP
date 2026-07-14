@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}Home | BookSwap{% endblock %}
+
+{% block content %}
+<div class="row align-items-center justify-content-center min-vh-75 py-5">
+    <div class="col-lg-8 text-center">
+        <!-- Badge -->
+        <span class="badge bg-secondary-dark border border-secondary text-primary px-3 py-2 rounded-pill mb-4 fs-6 animate-fade-in">
+            <i class="bi bi-rocket-takeoff-fill me-2"></i>Discover your next favorite read
+        </span>
+        
+        <!-- Main Title -->
+        <h1 class="display-3 fw-extrabold tracking-tight text-white mb-3">
+            Swap Books. <span class="text-primary-gradient">Save Money.</span>
+        </h1>
+        
+        <!-- Welcome Description -->
+        <p class="lead text-secondary mb-5 px-lg-5 fs-4">
+            Welcome to BookSwap, a beginner-friendly CRUD platform where you can catalog your books, browse others' collections, and exchange stories effortlessly. Start sharing your library today!
+        </p>
+        
+        <!-- Action Buttons -->
+        <div class="d-flex flex-column flex-sm-row justify-content-center gap-3">
+            <a href="{% url 'book_list' %}" class="btn btn-gradient btn-lg px-5 py-3 rounded-pill shadow">
+                <i class="bi bi-grid-fill me-2"></i>Browse Books
+            </a>
+            <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary btn-lg px-5 py-3 rounded-pill text-white border-secondary hover-bg-secondary">
+                <i class="bi bi-bar-chart-fill me-2"></i>View Stats
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Book | BookSwap{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center py-5">
+    <div class="col-md-8 col-lg-6">
+        <!-- Confirmation Card -->
+        <div class="card bg-dark-card border border-danger-50 rounded-4 shadow-lg overflow-hidden">
+            <div class="card-body p-5 text-center">
+                <!-- Alert Icon -->
+                <div class="text-danger mb-4">
+                    <i class="bi bi-exclamation-triangle-fill display-2"></i>
+                </div>
+                
+                <!-- Danger Warning -->
+                <h3 class="fw-bold text-white mb-2">Are you sure?</h3>
+                <p class="text-secondary mb-4">
+                    You are about to permanently delete the listing for <strong class="text-light">"{{ book.title }}"</strong>. This action cannot be undone.
+                </p>
+                
+                <!-- Delete Form -->
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="d-flex justify-content-center gap-2">
+                        <button type="submit" class="btn btn-danger px-4 py-2.5 rounded-pill shadow-sm">
+                            <i class="bi bi-trash-fill me-1"></i> Yes, Delete Listing
+                        </button>
+                        <a href="{% url 'book_detail' book.pk %}" class="btn btn-outline-secondary text-white border-secondary px-4 py-2.5 rounded-pill">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

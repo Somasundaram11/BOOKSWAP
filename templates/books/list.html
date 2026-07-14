@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}All Books | BookSwap{% endblock %}
+
+{% block content %}
+<!-- Page Header and Search Bar -->
+<div class="row align-items-center mb-5 gap-3 gap-md-0">
+    <div class="col-md-6">
+        <h2 class="fw-bold mb-1 text-white">Explore Books</h2>
+        <p class="text-secondary">Browse listings or search for specific titles and authors.</p>
+    </div>
+    <div class="col-md-6">
+        <form method="GET" action="{% url 'book_list' %}" class="d-flex gap-2">
+            <div class="input-group">
+                <span class="input-group-text bg-dark border-secondary text-secondary">
+                    <i class="bi bi-search"></i>
+                </span>
+                <input type="text" name="q" value="{{ query }}" class="form-control bg-dark text-white border-secondary" placeholder="Search by title or author...">
+            </div>
+            <button type="submit" class="btn btn-gradient px-4 rounded-pill">Search</button>
+            {% if query %}
+                <a href="{% url 'book_list' %}" class="btn btn-outline-secondary rounded-pill border-secondary text-white"><i class="bi bi-x-lg"></i></a>
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+<!-- Books Grid -->
+<div class="row">
+    {% if books %}
+        {% for book in books %}
+            <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100 bg-dark-card border border-secondary rounded-4 overflow-hidden book-card shadow-sm">
+                    <div class="card-body p-4 d-flex flex-column h-100">
+                        <!-- Genre Badge & Price -->
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="badge bg-secondary-dark border border-secondary text-light px-2.5 py-1.5 rounded">{{ book.genre }}</span>
+                            <span class="fs-5 fw-bold text-primary-gradient">${{ book.price }}</span>
+                        </div>
+                        
+                        <!-- Title & Author -->
+                        <h4 class="card-title fw-bold text-white mb-1 text-truncate">{{ book.title }}</h4>
+                        <p class="text-secondary-light mb-3">by <span class="text-light">{{ book.author }}</span></p>
+                        
+                        <!-- Condition Badge -->
+                        <div class="mb-3">
+                            {% if book.condition == 'New' %}
+                                <span class="badge bg-success-transparent text-success border border-success-20">New</span>
+                            {% elif book.condition == 'Good' %}
+                                <span class="badge bg-primary-transparent text-primary border border-primary-20">Good</span>
+                            {% elif book.condition == 'Fair' %}
+                                <span class="badge bg-warning-transparent text-warning border border-warning-20">Fair</span>
+                            {% else %}
+                                <span class="badge bg-danger-transparent text-danger border border-danger-20">Old</span>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Description snippet -->
+                        <p class="text-secondary card-text mb-4 text-truncate-3">
+                            {{ book.description }}
+                        </p>
+                        
+                        <!-- Owner Info & Actions (Sticky to bottom of card) -->
+                        <div class="mt-auto pt-3 border-top border-secondary d-flex justify-content-between align-items-center">
+                            <small class="text-secondary">Owner: <strong class="text-light">{{ book.owner_name }}</strong></small>
+                            <div class="d-flex gap-1">
+                                <a href="{% url 'book_detail' book.pk %}" class="btn btn-sm btn-outline-primary rounded-pill px-3">Details</a>
+                                <a href="{% url 'book_edit' book.pk %}" class="btn btn-sm btn-outline-info rounded-circle p-2 d-inline-flex align-items-center justify-content-center" style="width: 32px; height: 32px;"><i class="bi bi-pencil fs-6"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="col-12 text-center py-5">
+            <div class="card bg-dark-card border border-secondary rounded-4 p-5">
+                <i class="bi bi-journal-x text-secondary fs-1 mb-3"></i>
+                <h4 class="text-white fw-bold">No Books Found</h4>
+                {% if query %}
+                    <p class="text-secondary">We couldn't find any books matching "{{ query }}".</p>
+                    <a href="{% url 'book_list' %}" class="btn btn-gradient mt-3 px-4 rounded-pill">View All Books</a>
+                {% else %}
+                    <p class="text-secondary">No books have been listed yet. Check back later or add one yourself!</p>
+                    <a href="{% url 'book_add' %}" class="btn btn-gradient mt-3 px-4 rounded-pill">List a Book</a>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

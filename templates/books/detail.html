@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ book.title }} | BookSwap{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center py-4">
+    <div class="col-lg-9 col-xl-8">
+        <!-- Back Button -->
+        <a href="{% url 'book_list' %}" class="btn btn-sm btn-outline-secondary text-white border-secondary mb-4 rounded-pill px-3">
+            <i class="bi bi-arrow-left me-1"></i> Back to all books
+        </a>
+        
+        <!-- Book Details Card -->
+        <div class="card bg-dark-card border border-secondary rounded-4 shadow-lg overflow-hidden">
+            <div class="card-body p-5">
+                
+                <!-- Genre and Price Row -->
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <span class="badge bg-secondary-dark border border-secondary text-light px-3 py-2 rounded-pill fs-6">{{ book.genre }}</span>
+                    <h3 class="fw-extrabold text-primary-gradient mb-0">${{ book.price }}</h3>
+                </div>
+                
+                <!-- Book Title -->
+                <h1 class="display-5 fw-extrabold text-white mb-2">{{ book.title }}</h1>
+                <!-- Author -->
+                <p class="fs-5 text-secondary-light mb-4">by <span class="text-white fw-medium">{{ book.author }}</span></p>
+                
+                <div class="row mb-5 g-3">
+                    <!-- Condition Info -->
+                    <div class="col-sm-6 col-md-4">
+                        <div class="p-3 bg-dark-light border border-secondary rounded-3 text-center">
+                            <span class="text-secondary d-block small mb-1">Condition</span>
+                            {% if book.condition == 'New' %}
+                                <span class="badge bg-success-transparent text-success border border-success-20 px-3 py-1.5 rounded-pill">New</span>
+                            {% elif book.condition == 'Good' %}
+                                <span class="badge bg-primary-transparent text-primary border border-primary-20 px-3 py-1.5 rounded-pill">Good</span>
+                            {% elif book.condition == 'Fair' %}
+                                <span class="badge bg-warning-transparent text-warning border border-warning-20 px-3 py-1.5 rounded-pill">Fair</span>
+                            {% else %}
+                                <span class="badge bg-danger-transparent text-danger border border-danger-20 px-3 py-1.5 rounded-pill">Old</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- Owner Info -->
+                    <div class="col-sm-6 col-md-4">
+                        <div class="p-3 bg-dark-light border border-secondary rounded-3 text-center">
+                            <span class="text-secondary d-block small mb-1">Listed By</span>
+                            <span class="fw-bold text-white"><i class="bi bi-person-circle text-secondary me-1"></i> {{ book.owner_name }}</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Date Listed -->
+                    <div class="col-sm-12 col-md-4">
+                        <div class="p-3 bg-dark-light border border-secondary rounded-3 text-center">
+                            <span class="text-secondary d-block small mb-1">Listed On</span>
+                            <span class="fw-medium text-white-50"><i class="bi bi-calendar3 text-secondary me-1"></i> {{ book.created_at|date:"M d, Y" }}</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Description -->
+                <div class="mb-5">
+                    <h5 class="fw-bold text-white mb-3">Description</h5>
+                    <p class="text-secondary lh-lg fs-6" style="white-space: pre-wrap;">{{ book.description }}</p>
+                </div>
+                
+                <!-- Actions Footer -->
+                <div class="pt-4 border-top border-secondary d-flex flex-wrap gap-2 justify-content-between align-items-center">
+                    <div class="d-flex gap-2">
+                        <a href="{% url 'book_edit' book.pk %}" class="btn btn-info px-4 py-2 rounded-pill text-white shadow-sm">
+                            <i class="bi bi-pencil-fill me-1"></i> Edit Details
+                        </a>
+                        <a href="{% url 'book_delete' book.pk %}" class="btn btn-outline-danger px-4 py-2 rounded-pill">
+                            <i class="bi bi-trash-fill me-1"></i> Delete Book
+                        </a>
+                    </div>
+                    <small class="text-secondary-light">Interested in swapping? Contact the owner directly.</small>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
